@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Dictionary>
+	<!--
+	<Acronyms>
+		<CasingExceptions>
+			<Acronym>Io</Acronym>
+		</CasingExceptions>
+	</Acronyms>
+	-->
+	<Words>
+		<!--
+		<DiscreteExceptions>
+			<Term>ms</Term>
+		</DiscreteExceptions>
+		-->
+		<Recognized>
+			<Word>kindberg</Word>
+			<Word>län</Word>
+			<Word>ms</Word><!-- milli-second -->
+			<Word>örebro</Word>
+		</Recognized>
+	</Words>
+</Dictionary>
