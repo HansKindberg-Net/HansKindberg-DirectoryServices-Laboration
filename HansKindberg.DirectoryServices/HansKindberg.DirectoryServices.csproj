@@ -34,10 +34,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributesSetting.cs" />
+    <Compile Include="Configuration\ActiveDirectory\ActiveDirectorySettings.cs" />
+    <Compile Include="Configuration\DirectorySettings.cs" />
+    <Compile Include="Configuration\Organization\OrganizationDirectorySettings.cs" />
     <Compile Include="DistinguishedName.cs" />
     <Compile Include="DistinguishedNameComponent.cs" />
     <Compile Include="DistinguishedNameComponentValidator.cs" />
     <Compile Include="DistinguishedNameParser.cs" />
+    <Compile Include="IDirectorySettings.cs" />
     <Compile Include="IDistinguishedName.cs" />
     <Compile Include="IDistinguishedNameComponent.cs" />
     <Compile Include="IDistinguishedNameComponentValidator.cs" />

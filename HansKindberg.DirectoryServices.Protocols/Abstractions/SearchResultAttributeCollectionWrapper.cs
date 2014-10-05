@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 
-namespace HansKindberg.DirectoryServices.Protocols
+namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 {
 	[SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 	public class SearchResultAttributeCollectionWrapper : IEnumerable<IDirectoryAttribute>

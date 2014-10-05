@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace HansKindberg.DirectoryServices.Protocols
+namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 {
-	public interface IAbstractDirectory
+	public interface IDirectory
 	{
 		#region Methods
 

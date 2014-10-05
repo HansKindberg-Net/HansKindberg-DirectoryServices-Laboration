@@ -1,4 +1,4 @@
-﻿namespace HansKindberg.DirectoryServices.Protocols
+﻿namespace HansKindberg.DirectoryServices
 {
 	public enum AttributesSetting
 	{

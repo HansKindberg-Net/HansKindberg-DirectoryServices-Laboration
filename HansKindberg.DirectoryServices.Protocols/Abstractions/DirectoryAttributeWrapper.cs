@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
 using System.Linq;
 
-namespace HansKindberg.DirectoryServices.Protocols
+namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 {
 	[SuppressMessage("Microsoft.Naming", "CA1710:IdentifiersShouldHaveCorrectSuffix")]
 	public class DirectoryAttributeWrapper : IDirectoryAttribute

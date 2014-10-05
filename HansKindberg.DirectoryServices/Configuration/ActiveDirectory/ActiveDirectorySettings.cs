@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace HansKindberg.DirectoryServices.Protocols.Organization
+namespace HansKindberg.DirectoryServices.Configuration.ActiveDirectory
 {
-	public class OrganizationDirectorySettings : DirectorySettings
+	public class ActiveDirectorySettings : DirectorySettings
 	{
 		#region Fields
 
-		private const string _identityAttributeName = "youKnowWhat";
+		private const string _identityAttributeName = "objectGUID";
 		private static readonly IEnumerable<string> _identityAttributes = new[] {_identityAttributeName};
 		private static readonly IEnumerable<string> _minimumNumberOfAttributes = new[] {"objectClass", _identityAttributeName};
 

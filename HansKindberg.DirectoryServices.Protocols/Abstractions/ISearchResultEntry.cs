@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HansKindberg.DirectoryServices.Protocols
+namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 {
 	public interface ISearchResultEntry
 	{
