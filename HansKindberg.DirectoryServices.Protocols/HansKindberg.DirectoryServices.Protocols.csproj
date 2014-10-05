@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{70D67E69-BDBE-47A8-B94C-DA497E8420E8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HansKindberg.DirectoryServices.Protocols</RootNamespace>
+    <AssemblyName>HansKindberg.DirectoryServices.Protocols</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractDirectory.cs" />
+    <Compile Include="ActiveDirectory\ActiveDirectorySettings.cs" />
+    <Compile Include="AttributesSetting.cs" />
+    <Compile Include="Connections\ILdapConnectionFactory.cs" />
+    <Compile Include="Connections\ILdapConnectionSettings.cs" />
+    <Compile Include="Connections\ILdapConnectionSettingsParser.cs" />
+    <Compile Include="Connections\LdapConnectionFactory.cs" />
+    <Compile Include="Connections\LdapConnectionSettings.cs" />
+    <Compile Include="Connections\LdapConnectionSettingsParser.cs" />
+    <Compile Include="Directory.cs" />
+    <Compile Include="DirectoryAttributeWrapper.cs" />
+    <Compile Include="DirectorySettings.cs" />
+    <Compile Include="IAbstractDirectory.cs" />
+    <Compile Include="IDirectory.cs" />
+    <Compile Include="IDirectoryAttribute.cs" />
+    <Compile Include="IDirectorySettings.cs" />
+    <Compile Include="ISearchOptions.cs" />
+    <Compile Include="ISearchResultEntry.cs" />
+    <Compile Include="Organization\OrganizationDirectorySettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Properties\Solution-AssemblyInfo.cs">
+      <Link>Properties\Solution-AssemblyInfo.cs</Link>
+    </Compile>
+    <CodeAnalysisDictionary Include="CodeAnalysis\AssemblyDictionary.xml" />
+    <Compile Include="CodeAnalysis\AssemblySuppressions.cs" />
+    <CodeAnalysisDictionary Include="..\CodeAnalysis\SolutionDictionary.xml">
+      <Link>CodeAnalysis\SolutionDictionary.xml</Link>
+    </CodeAnalysisDictionary>
+    <Compile Include="..\CodeAnalysis\SolutionSuppressions.cs">
+      <Link>CodeAnalysis\SolutionSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="SearchOptions.cs" />
+    <Compile Include="SearchResultAttributeCollectionWrapper.cs" />
+    <Compile Include="SearchResultEntryWrapper.cs" />
+    <None Include="..\Signing\HansKindberg.snk">
+      <Link>HansKindberg.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HansKindberg.DirectoryServices\HansKindberg.DirectoryServices.csproj">
+      <Project>{b1861f5f-168a-4c28-b5c5-22f3992d1f08}</Project>
+      <Name>HansKindberg.DirectoryServices</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -5,6 +5,7 @@ FakesAssemblies/
 obj/
 packages/*
 release/
+Tester/
 testresults/
 *.suo
 *.user
