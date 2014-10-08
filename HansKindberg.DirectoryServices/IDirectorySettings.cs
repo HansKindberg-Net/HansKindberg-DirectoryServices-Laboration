@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HansKindberg.DirectoryServices
 {
@@ -6,15 +7,22 @@ namespace HansKindberg.DirectoryServices
 	{
 		#region Properties
 
+		[SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods")]
+		IEnumerable<string> Attributes { get; }
+
+		string DefaultDistinguishedName { get; }
 		string Filter { get; }
 		string HiddenObjectClass { get; }
-		string IdentityAttributeName { get; }
-		IEnumerable<string> IdentityAttributes { get; }
-		IEnumerable<string> MinimumNumberOfAttributes { get; }
-		IEnumerable<string> NoExistingAttributes { get; }
-		string ObjectClassAttributeName { get; }
+		string IdentityAttribute { get; }
+		string ObjectClassAttribute { get; }
 		int? PageSize { get; }
 		int? SizeLimit { get; }
+
+		#endregion
+
+		#region Methods
+
+		IEnumerable<string> GetAttributes(IEnumerable<string> attributes, AttributesSetting attributesSetting);
 
 		#endregion
 	}

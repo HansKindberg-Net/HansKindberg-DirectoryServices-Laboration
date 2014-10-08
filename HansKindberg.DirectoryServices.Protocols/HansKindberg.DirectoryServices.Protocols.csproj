@@ -20,6 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CodeAnalysis\Solution.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CodeAnalysis\Solution.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\Signing\HansKindberg.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,7 +61,6 @@
     <Compile Include="Connections\LdapConnectionSettingsParser.cs" />
     <Compile Include="Directory.cs" />
     <Compile Include="IDirectory.cs" />
-    <Compile Include="ISearchOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\Properties\Solution-AssemblyInfo.cs">
       <Link>Properties\Solution-AssemblyInfo.cs</Link>
@@ -64,7 +73,6 @@
     <Compile Include="..\CodeAnalysis\SolutionSuppressions.cs">
       <Link>CodeAnalysis\SolutionSuppressions.cs</Link>
     </Compile>
-    <Compile Include="SearchOptions.cs" />
     <None Include="..\Signing\HansKindberg.snk">
       <Link>HansKindberg.snk</Link>
     </None>

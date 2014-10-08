@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using HansKindberg.Validation;
 
 namespace HansKindberg.DirectoryServices
 {
@@ -13,7 +12,6 @@ namespace HansKindberg.DirectoryServices
 
 		private IEnumerable<char> _invalidValueCharacters;
 		private static readonly IEnumerable<char> _specialInvalidValueCharacters = new[] {'/'};
-		//private static readonly Regex _validNameRegularExpression = new Regex("^[0-9a-zA-Z]+$", RegexOptions.Compiled);
 		private static readonly Regex _validNameRegularExpression = new Regex(@"^[0-9a-zA-Z]+\z$", RegexOptions.Compiled);
 
 		#endregion
@@ -49,50 +47,40 @@ namespace HansKindberg.DirectoryServices
 
 		#region Methods
 
-		public virtual IValidationResult ValidateName(string name)
+		public virtual void ValidateName(string name)
 		{
-			var validationResult = new ValidationResult();
-
 			if(name == null)
-				validationResult.Exceptions.Add(new ArgumentNullException("name"));
-			else if(name.Length == 0)
-				validationResult.Exceptions.Add(new ArgumentException("The name can not be empty.", "name"));
-			else if(!this.ValidNameRegularExpression.IsMatch(name))
-				validationResult.Exceptions.Add(new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The name \"{0}\" is invalid.", name), "name"));
+				throw new ArgumentNullException("name");
 
-			return validationResult;
+			if(name.Length == 0)
+				throw new ArgumentException("The name can not be empty.", "name");
+
+			if(!this.ValidNameRegularExpression.IsMatch(name))
+				throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The name \"{0}\" is invalid.", name), "name");
 		}
 
-		public virtual IValidationResult ValidateValue(string value)
+		public virtual void ValidateValue(string value)
 		{
-			var validationResult = new ValidationResult();
-
 			if(value == null)
-			{
-				validationResult.Exceptions.Add(new ArgumentNullException("value"));
-			}
-			else
-			{
-				var temporaryValue = value;
+				throw new ArgumentNullException("value");
 
-				// ReSharper disable LoopCanBeConvertedToQuery
+			var temporaryValue = value;
+
+			// ReSharper disable LoopCanBeConvertedToQuery
+			foreach(var invalidValueCharacter in this.InvalidValueCharacters)
+			{
+				temporaryValue = temporaryValue.Replace(@"\" + invalidValueCharacter, string.Empty);
+			}
+
+			foreach(var character in temporaryValue)
+			{
 				foreach(var invalidValueCharacter in this.InvalidValueCharacters)
 				{
-					temporaryValue = temporaryValue.Replace(@"\" + invalidValueCharacter, string.Empty);
+					if(character.Equals(invalidValueCharacter))
+						throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The value \"{0}\" is invalid. The value can not contain the character '{1}'. If you need to include the character you have to escape it.", value, invalidValueCharacter), "value");
 				}
-
-				foreach(var character in temporaryValue)
-				{
-					foreach(var invalidValueCharacter in this.InvalidValueCharacters)
-					{
-						if(character.Equals(invalidValueCharacter))
-							validationResult.Exceptions.Add(new ArgumentException(string.Format(CultureInfo.InvariantCulture, "The value \"{0}\" is invalid. The value can not contain the character '{1}'. If you need to include the character you have to escape it.", value, invalidValueCharacter), "value"));
-					}
-				}
-				// ReSharper restore LoopCanBeConvertedToQuery
 			}
-
-			return validationResult;
+			// ReSharper restore LoopCanBeConvertedToQuery
 		}
 
 		#endregion

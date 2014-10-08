@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace HansKindberg.DirectoryServices
 {
@@ -23,15 +22,9 @@ namespace HansKindberg.DirectoryServices
 			if(distinguishedNameComponentValidator == null)
 				throw new ArgumentNullException("distinguishedNameComponentValidator");
 
-			var validationResult = distinguishedNameComponentValidator.ValidateName(name);
+			distinguishedNameComponentValidator.ValidateName(name);
 
-			if(!validationResult.IsValid)
-				throw validationResult.Exceptions.First();
-
-			validationResult = distinguishedNameComponentValidator.ValidateValue(value);
-
-			if(!validationResult.IsValid)
-				throw validationResult.Exceptions.First();
+			distinguishedNameComponentValidator.ValidateValue(value);
 
 			this._name = name;
 			this._value = value;

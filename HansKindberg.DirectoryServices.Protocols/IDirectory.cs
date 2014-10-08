@@ -1,37 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.DirectoryServices.Protocols;
-using HansKindberg.DirectoryServices.Protocols.Connections;
 
 namespace HansKindberg.DirectoryServices.Protocols
 {
 	public interface IDirectory
 	{
-		#region Properties
-
-		IDirectorySettings DirectorySettings { get; }
-		ILdapConnectionSettings LdapConnectionSettings { get; }
-
-		#endregion
-
 		#region Methods
 
-		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
-		SearchResultEntry Get(string identity);
+		IEnumerable<SearchResultEntry> Find(string distinguishedName);
+		IEnumerable<SearchResultEntry> Find(string distinguishedName, ISearchOptions searchOptions);
 
 		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
-		SearchResultEntry Get(string identity, ISearchOptions searchOptions);
+		SearchResultEntry Get(string distinguishedName);
 
-		IEnumerable<SearchResultEntry> GetAncestors(string identity);
-		IEnumerable<SearchResultEntry> GetAncestors(string identity, ISearchOptions searchOptions);
-		IEnumerable<SearchResultEntry> GetChildren(string identity);
-		IEnumerable<SearchResultEntry> GetChildren(string identity, ISearchOptions searchOptions);
-		SearchResultEntry GetParent(string identity);
-		SearchResultEntry GetParent(string identity, ISearchOptions searchOptions);
-		IEnumerable<SearchResultEntry> GetTree();
-		IEnumerable<SearchResultEntry> GetTree(string identity);
-		IEnumerable<SearchResultEntry> GetTree(ISearchOptions searchOptions);
-		IEnumerable<SearchResultEntry> GetTree(string identity, ISearchOptions searchOptions);
+		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
+		SearchResultEntry Get(string distinguishedName, ISearchOptions searchOptions);
+
+		IEnumerable<SearchResultEntry> GetAncestors(string distinguishedName);
+		IEnumerable<SearchResultEntry> GetAncestors(string distinguishedName, ISearchOptions searchOptions);
+		IEnumerable<SearchResultEntry> GetChildren(string distinguishedName);
+		IEnumerable<SearchResultEntry> GetChildren(string distinguishedName, ISearchOptions searchOptions);
+		SearchResultEntry GetParent(string distinguishedName);
+		SearchResultEntry GetParent(string distinguishedName, ISearchOptions searchOptions);
 
 		#endregion
 	}

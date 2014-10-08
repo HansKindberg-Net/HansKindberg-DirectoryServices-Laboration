@@ -7,22 +7,21 @@ namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 	{
 		#region Methods
 
-		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
-		ISearchResultEntry Get(string identity);
+		IEnumerable<ISearchResultEntry> Find(string distinguishedName);
+		IEnumerable<ISearchResultEntry> Find(string distinguishedName, ISearchOptions searchOptions);
 
 		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
-		ISearchResultEntry Get(string identity, ISearchOptions searchOptions);
+		ISearchResultEntry Get(string distinguishedName);
 
-		IEnumerable<ISearchResultEntry> GetAncestors(string identity);
-		IEnumerable<ISearchResultEntry> GetAncestors(string identity, ISearchOptions searchOptions);
-		IEnumerable<ISearchResultEntry> GetChildren(string identity);
-		IEnumerable<ISearchResultEntry> GetChildren(string identity, ISearchOptions searchOptions);
-		ISearchResultEntry GetParent(string identity);
-		ISearchResultEntry GetParent(string identity, ISearchOptions searchOptions);
-		IEnumerable<ISearchResultEntry> GetTree();
-		IEnumerable<ISearchResultEntry> GetTree(string identity);
-		IEnumerable<ISearchResultEntry> GetTree(ISearchOptions searchOptions);
-		IEnumerable<ISearchResultEntry> GetTree(string identity, ISearchOptions searchOptions);
+		[SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", MessageId = "Get")]
+		ISearchResultEntry Get(string distinguishedName, ISearchOptions searchOptions);
+
+		IEnumerable<ISearchResultEntry> GetAncestors(string distinguishedName);
+		IEnumerable<ISearchResultEntry> GetAncestors(string distinguishedName, ISearchOptions searchOptions);
+		IEnumerable<ISearchResultEntry> GetChildren(string distinguishedName);
+		IEnumerable<ISearchResultEntry> GetChildren(string distinguishedName, ISearchOptions searchOptions);
+		ISearchResultEntry GetParent(string distinguishedName);
+		ISearchResultEntry GetParent(string distinguishedName, ISearchOptions searchOptions);
 
 		#endregion
 	}

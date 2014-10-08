@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.DirectoryServices.Protocols;
-using System.Globalization;
 using System.Linq;
 using HansKindberg.DirectoryServices.Protocols.Connections;
 
 namespace HansKindberg.DirectoryServices.Protocols
 {
-	public class Directory : IDirectory
+	public class Directory : Directory<SearchResultEntry>, IDirectory
 	{
 		#region Fields
 
-		private readonly IDirectorySettings _directorySettings;
-		private readonly IDistinguishedNameParser _distinguishedNameParser;
 		private readonly ILdapConnectionFactory _ldapConnectionFactory;
 		private readonly ILdapConnectionSettings _ldapConnectionSettings;
 
@@ -20,7 +17,7 @@ namespace HansKindberg.DirectoryServices.Protocols
 
 		#region Constructors
 
-		public Directory(ILdapConnectionFactory ldapConnectionFactory, ILdapConnectionSettings ldapConnectionSettings, IDirectorySettings directorySettings, IDistinguishedNameParser distinguishedNameParser)
+		public Directory(ILdapConnectionFactory ldapConnectionFactory, ILdapConnectionSettings ldapConnectionSettings, IDirectorySettings directorySettings, IDistinguishedNameParser distinguishedNameParser) : base(directorySettings, distinguishedNameParser)
 		{
 			if(ldapConnectionFactory == null)
 				throw new ArgumentNullException("ldapConnectionFactory");
@@ -28,14 +25,6 @@ namespace HansKindberg.DirectoryServices.Protocols
 			if(ldapConnectionSettings == null)
 				throw new ArgumentNullException("ldapConnectionSettings");
 
-			if(directorySettings == null)
-				throw new ArgumentNullException("directorySettings");
-
-			if(distinguishedNameParser == null)
-				throw new ArgumentNullException("distinguishedNameParser");
-
-			this._directorySettings = directorySettings;
-			this._distinguishedNameParser = distinguishedNameParser;
 			this._ldapConnectionFactory = ldapConnectionFactory;
 			this._ldapConnectionSettings = ldapConnectionSettings;
 		}
@@ -43,16 +32,6 @@ namespace HansKindberg.DirectoryServices.Protocols
 		#endregion
 
 		#region Properties
-
-		public virtual IDirectorySettings DirectorySettings
-		{
-			get { return this._directorySettings; }
-		}
-
-		protected internal virtual IDistinguishedNameParser DistinguishedNameParser
-		{
-			get { return this._distinguishedNameParser; }
-		}
 
 		protected internal virtual ILdapConnectionFactory LdapConnectionFactory
 		{
@@ -68,56 +47,9 @@ namespace HansKindberg.DirectoryServices.Protocols
 
 		#region Methods
 
-		protected internal virtual string ConcatenateFilters(string firstFilter, string secondFilter)
+		protected internal virtual SearchRequest CreateSearchRequest(string distinguishedName, string filter, SearchScope searchScope, IEnumerable<string> attributes)
 		{
-			return this.ConcatenateFilters(firstFilter, secondFilter, false);
-		}
-
-		protected internal virtual string ConcatenateFilters(string firstFilter, string secondFilter, bool concatenateAsOr)
-		{
-			if(secondFilter == null)
-				return firstFilter;
-
-			if(firstFilter == null)
-				return secondFilter;
-
-			if(!firstFilter.StartsWith("(", StringComparison.OrdinalIgnoreCase))
-				firstFilter = "(" + firstFilter + ")";
-
-			if(!secondFilter.StartsWith("(", StringComparison.OrdinalIgnoreCase))
-				secondFilter = "(" + secondFilter + ")";
-
-			return string.Format(CultureInfo.InvariantCulture, "({0}{1}{2})", concatenateAsOr ? "|" : "&", firstFilter, secondFilter);
-		}
-
-		protected internal virtual ISearchOptions CreateDefaultGetAncestorsSettings()
-		{
-			return new SearchOptions();
-		}
-
-		protected internal virtual ISearchOptions CreateDefaultGetChildrenSettings()
-		{
-			return new SearchOptions();
-		}
-
-		protected internal virtual ISearchOptions CreateDefaultGetParentSettings()
-		{
-			return new SearchOptions();
-		}
-
-		protected internal virtual ISearchOptions CreateDefaultGetSettings()
-		{
-			return new SearchOptions();
-		}
-
-		protected internal virtual ISearchOptions CreateDefaultGetTreeSettings()
-		{
-			return new SearchOptions();
-		}
-
-		protected internal virtual SearchRequest CreateSearchRequest(string identity, string filter, SearchScope searchScope, IEnumerable<string> attributes)
-		{
-			var searchRequest = new SearchRequest(identity, filter, searchScope, attributes != null ? attributes.ToArray() : null);
+			var searchRequest = new SearchRequest(distinguishedName, filter, searchScope, attributes != null ? attributes.ToArray() : null);
 
 			if(this.DirectorySettings.SizeLimit != null)
 				searchRequest.SizeLimit = this.DirectorySettings.SizeLimit.Value;
@@ -125,26 +57,21 @@ namespace HansKindberg.DirectoryServices.Protocols
 			return searchRequest;
 		}
 
-		public virtual SearchResultEntry Get(string identity)
+		public override IEnumerable<SearchResultEntry> Find(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.Get(identity, this.CreateDefaultGetSettings());
+			return this.GetSearchResult(distinguishedName, SearchScope.Subtree, searchOptions, this.DirectorySettings.PageSize);
 		}
 
-		public virtual SearchResultEntry Get(string identity, ISearchOptions searchOptions)
+		public override SearchResultEntry Get(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.GetSearchResult(identity, searchOptions, SearchScope.Base, null).FirstOrDefault();
+			return this.GetSearchResult(distinguishedName, SearchScope.Base, searchOptions, null).FirstOrDefault();
 		}
 
-		public virtual IEnumerable<SearchResultEntry> GetAncestors(string identity)
-		{
-			return this.GetAncestors(identity, this.CreateDefaultGetAncestorsSettings());
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetAncestors(string identity, ISearchOptions searchOptions)
+		public override IEnumerable<SearchResultEntry> GetAncestors(string distinguishedName, ISearchOptions searchOptions)
 		{
 			var ancestors = new List<SearchResultEntry>();
 
-			var parent = this.GetParent(identity, searchOptions);
+			var parent = this.GetParent(distinguishedName, searchOptions);
 
 			while(parent != null)
 			{
@@ -156,49 +83,19 @@ namespace HansKindberg.DirectoryServices.Protocols
 			return ancestors.ToArray();
 		}
 
-		protected internal virtual IEnumerable<string> GetAttributes(ISearchOptions searchOptions)
+		public override IEnumerable<SearchResultEntry> GetChildren(string distinguishedName, ISearchOptions searchOptions)
 		{
-			if(searchOptions == null)
-				throw new ArgumentNullException("searchOptions");
-
-			switch(searchOptions.AttributesSetting)
-			{
-				case AttributesSetting.Identity:
-					return this.DirectorySettings.IdentityAttributes;
-				case AttributesSetting.Minimum:
-					return this.DirectorySettings.MinimumNumberOfAttributes;
-				case AttributesSetting.None:
-					return this.DirectorySettings.NoExistingAttributes;
-				default:
-					return searchOptions.Attributes;
-			}
+			return this.GetSearchResult(distinguishedName, SearchScope.OneLevel, searchOptions, this.DirectorySettings.PageSize);
 		}
 
-		public virtual IEnumerable<SearchResultEntry> GetChildren(string identity)
+		public override SearchResultEntry GetParent(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.GetChildren(identity, this.CreateDefaultGetChildrenSettings());
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetChildren(string identity, ISearchOptions searchOptions)
-		{
-			return this.GetSearchResult(identity, searchOptions, SearchScope.OneLevel, this.DirectorySettings.PageSize);
-		}
-
-		public virtual SearchResultEntry GetParent(string identity)
-		{
-			return this.GetParent(identity, this.CreateDefaultGetParentSettings());
-		}
-
-		public virtual SearchResultEntry GetParent(string identity, ISearchOptions searchOptions)
-		{
-			var item = this.Get(identity, searchOptions);
+			var item = this.Get(distinguishedName, searchOptions);
 
 			if(item == null)
 				return null;
 
-			var distinguishedName = this.DistinguishedNameParser.Parse(item.DistinguishedName);
-
-			var parentDistinguishedName = distinguishedName.Parent;
+			var parentDistinguishedName = this.DistinguishedNameParser.Parse(item.DistinguishedName).Parent;
 
 			if(parentDistinguishedName == null)
 				return null;
@@ -219,14 +116,14 @@ namespace HansKindberg.DirectoryServices.Protocols
 			return searchResponse;
 		}
 
-		protected internal virtual IEnumerable<SearchResultEntry> GetSearchResult(string identity, ISearchOptions searchOptions, SearchScope searchScope, int? pageSize)
+		protected internal virtual IEnumerable<SearchResultEntry> GetSearchResult(string distinguishedName, SearchScope searchScope, ISearchOptions searchOptions, int? pageSize)
 		{
 			if(searchOptions == null)
 				throw new ArgumentNullException("searchOptions");
 
 			using(var ldapConnection = this.LdapConnectionFactory.Create(this.LdapConnectionSettings))
 			{
-				var searchRequest = this.CreateSearchRequest(identity, this.ConcatenateFilters(this.DirectorySettings.Filter, searchOptions.Filter), searchScope, this.GetAttributes(searchOptions));
+				var searchRequest = this.CreateSearchRequest(distinguishedName, this.ConcatenateFilters(this.DirectorySettings.Filter, searchOptions.Filter), searchScope, this.GetAttributes(searchOptions));
 
 				if(pageSize != null)
 				{
@@ -260,26 +157,6 @@ namespace HansKindberg.DirectoryServices.Protocols
 
 				return this.GetSearchResponse(ldapConnection, searchRequest).Entries.Cast<SearchResultEntry>();
 			}
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetTree()
-		{
-			return this.GetTree(this.LdapConnectionSettings.DistinguishedName);
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetTree(string identity)
-		{
-			return this.GetTree(identity, this.CreateDefaultGetTreeSettings());
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetTree(ISearchOptions searchOptions)
-		{
-			return this.GetTree(this.LdapConnectionSettings.DistinguishedName, searchOptions);
-		}
-
-		public virtual IEnumerable<SearchResultEntry> GetTree(string identity, ISearchOptions searchOptions)
-		{
-			return this.GetSearchResult(identity, searchOptions, SearchScope.Subtree, this.DirectorySettings.PageSize);
 		}
 
 		#endregion

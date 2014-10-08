@@ -31,64 +31,54 @@ namespace HansKindberg.DirectoryServices.Protocols.Abstractions
 			return searchResultEntries.Select(searchResultEntry => (ISearchResultEntry) (SearchResultEntryWrapper) searchResultEntry);
 		}
 
-		ISearchResultEntry IDirectory.Get(string identity)
+		IEnumerable<ISearchResultEntry> IDirectory.Find(string distinguishedName)
 		{
-			return (SearchResultEntryWrapper) this.Get(identity);
+			return this.CastCollection(this.Find(distinguishedName));
 		}
 
-		ISearchResultEntry IDirectory.Get(string identity, ISearchOptions searchOptions)
+		IEnumerable<ISearchResultEntry> IDirectory.Find(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return (SearchResultEntryWrapper) this.Get(identity, searchOptions);
+			return this.CastCollection(this.Find(distinguishedName, searchOptions));
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetAncestors(string identity)
+		ISearchResultEntry IDirectory.Get(string distinguishedName)
 		{
-			return this.CastCollection(this.GetAncestors(identity));
+			return (SearchResultEntryWrapper) this.Get(distinguishedName);
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetAncestors(string identity, ISearchOptions searchOptions)
+		ISearchResultEntry IDirectory.Get(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.CastCollection(this.GetAncestors(identity, searchOptions));
+			return (SearchResultEntryWrapper) this.Get(distinguishedName, searchOptions);
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetChildren(string identity)
+		IEnumerable<ISearchResultEntry> IDirectory.GetAncestors(string distinguishedName)
 		{
-			return this.CastCollection(this.GetChildren(identity));
+			return this.CastCollection(this.GetAncestors(distinguishedName));
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetChildren(string identity, ISearchOptions searchOptions)
+		IEnumerable<ISearchResultEntry> IDirectory.GetAncestors(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.CastCollection(this.GetChildren(identity, searchOptions));
+			return this.CastCollection(this.GetAncestors(distinguishedName, searchOptions));
 		}
 
-		ISearchResultEntry IDirectory.GetParent(string identity)
+		IEnumerable<ISearchResultEntry> IDirectory.GetChildren(string distinguishedName)
 		{
-			return (SearchResultEntryWrapper) this.GetParent(identity);
+			return this.CastCollection(this.GetChildren(distinguishedName));
 		}
 
-		ISearchResultEntry IDirectory.GetParent(string identity, ISearchOptions searchOptions)
+		IEnumerable<ISearchResultEntry> IDirectory.GetChildren(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return (SearchResultEntryWrapper) this.GetParent(identity, searchOptions);
+			return this.CastCollection(this.GetChildren(distinguishedName, searchOptions));
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetTree()
+		ISearchResultEntry IDirectory.GetParent(string distinguishedName)
 		{
-			return this.CastCollection(this.GetTree());
+			return (SearchResultEntryWrapper) this.GetParent(distinguishedName);
 		}
 
-		IEnumerable<ISearchResultEntry> IDirectory.GetTree(string identity)
+		ISearchResultEntry IDirectory.GetParent(string distinguishedName, ISearchOptions searchOptions)
 		{
-			return this.CastCollection(this.GetTree(identity));
-		}
-
-		IEnumerable<ISearchResultEntry> IDirectory.GetTree(ISearchOptions searchOptions)
-		{
-			return this.CastCollection(this.GetTree(searchOptions));
-		}
-
-		IEnumerable<ISearchResultEntry> IDirectory.GetTree(string identity, ISearchOptions searchOptions)
-		{
-			return this.CastCollection(this.GetTree(identity, searchOptions));
+			return (SearchResultEntryWrapper) this.GetParent(distinguishedName, searchOptions);
 		}
 
 		#endregion

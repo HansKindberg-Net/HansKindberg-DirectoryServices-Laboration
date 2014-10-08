@@ -8,7 +8,6 @@ namespace HansKindberg.DirectoryServices.Protocols.Connections
 		#region Properties
 
 		AuthType? AuthenticationType { get; }
-		string DistinguishedName { get; }
 		string Host { get; }
 		string Password { get; }
 		int? Port { get; }

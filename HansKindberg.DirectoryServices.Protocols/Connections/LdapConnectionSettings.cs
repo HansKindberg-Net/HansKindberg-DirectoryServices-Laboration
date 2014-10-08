@@ -16,7 +16,6 @@ namespace HansKindberg.DirectoryServices.Protocols.Connections
 		#region Properties
 
 		public virtual AuthType? AuthenticationType { get; set; }
-		public virtual string DistinguishedName { get; set; }
 		public virtual string Host { get; set; }
 		public virtual string Password { get; set; }
 

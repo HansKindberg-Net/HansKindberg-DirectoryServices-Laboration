@@ -138,11 +138,6 @@ namespace HansKindberg.DirectoryServices.Protocols.Connections
 					ldapConnectionSettings.AuthenticationType = (AuthType) Enum.Parse(typeof(AuthType), keyValuePair.Value);
 					break;
 				}
-				case "distinguishedname":
-				{
-					ldapConnectionSettings.DistinguishedName = keyValuePair.Value;
-					break;
-				}
 				case "host":
 				{
 					ldapConnectionSettings.Host = keyValuePair.Value;

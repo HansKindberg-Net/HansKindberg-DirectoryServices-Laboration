@@ -1,34 +1,35 @@
-﻿using System.Collections.Generic;
+﻿//using System.Collections.Generic;
 
-namespace HansKindberg.DirectoryServices.Configuration.Organization
-{
-	public class OrganizationDirectorySettings : DirectorySettings
-	{
-		#region Fields
+//namespace HansKindberg.DirectoryServices.Configuration.Organization
+//{
+//	public class OrganizationDirectorySettings : DirectorySettings
+//	{
+//		#region Fields
 
-		private const string _identityAttributeName = "youKnowWhat";
-		private static readonly IEnumerable<string> _identityAttributes = new[] {_identityAttributeName};
-		private static readonly IEnumerable<string> _minimumNumberOfAttributes = new[] {"objectClass", _identityAttributeName};
+//		private const string _identityAttributeName = "youKnowWhat";
+//		private static readonly IEnumerable<string> _identityAttributes = new[] {_identityAttributeName};
+//		private static readonly IEnumerable<string> _minimumNumberOfAttributes = new[] {"objectClass", _identityAttributeName};
 
-		#endregion
+//		#endregion
 
-		#region Properties
+//		#region Properties
 
-		public override string IdentityAttributeName
-		{
-			get { return _identityAttributeName; }
-		}
+//		public override string IdentityAttributeName
+//		{
+//			get { return _identityAttributeName; }
+//		}
 
-		public override IEnumerable<string> IdentityAttributes
-		{
-			get { return _identityAttributes; }
-		}
+//		public override IEnumerable<string> IdentityAttributes
+//		{
+//			get { return _identityAttributes; }
+//		}
 
-		public override IEnumerable<string> MinimumNumberOfAttributes
-		{
-			get { return _minimumNumberOfAttributes; }
-		}
+//		public override IEnumerable<string> MinimumNumberOfAttributes
+//		{
+//			get { return _minimumNumberOfAttributes; }
+//		}
 
-		#endregion
-	}
-}
+//		#endregion
+//	}
+//}
+
